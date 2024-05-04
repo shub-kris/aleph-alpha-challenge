@@ -1,6 +1,8 @@
 # Case Study for AI Solutions Engineer
 
 
+
+
 ## Problem
 
 - **Goal**: Assist agents in finding a solution for incoming new tickets by utilizing information from previously resolved tickets.
@@ -41,10 +43,28 @@ The solution can be broken down into the following components:
     - Retrieve the top `k` most similar historical tickets.
 
 
-You can find the code for the same in the [solution.ipynb](./solution.ipynb) notebook. The notebook contains detailed explanations of the code and the steps involved in the solution.
+You can find the code for the same in the [solution.ipynb](./solution.ipynb) notebook. The notebook contains detailed explanations of the code and the steps involved in the solution. The structure of the files should be like this, in order to run the notebook out of the box without any changes.
+
+```
+├── README.md
+├── aa-case-study-ai-solutions-engineer-main
+│   ├── README.md
+│   └── data
+│       ├── new_tickets.csv
+│       └── old_tickets
+│           ├── ticket_dump_1.csv
+│           ├── ticket_dump_2.xlsx
+│           └── ticket_dump_3.json
+├── images
+│   ├── diagram.svg
+│   └── spaces_screenshot.png
+└── solution.ipynb
+
+```
+
+You can also change the path where the data is stored in the Notebook.
 
 **Note**: The system returns both the `resolved` and `unresolved` tickets but it can be modified quite easily to return only the `resolved` tickets by filtering the `old_tickets` data based on the `Resolved` column.
-
 
 
 ### Hugging Face Spaces demo
