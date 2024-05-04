@@ -25,6 +25,8 @@ I propose a Semantic Ticket Matching system that leverages: `Issue` and `Descrip
 
 The developed solution is an intelligent search as it is much more than a simple text search. By analyzing the semantic meaning of ticket's `Issue` and `Description`, the system retrieves relevant historical tickets and provides valuable insights to aid in problem resolution.
 
+I only chose the `Issue` and `Description` to embed because they are the most important fields that contain the information about the problem and the context of the ticket. 
+
 The solution can be broken down into the following components:
 
 1. **Embedding Old Tickets Data**:
@@ -39,7 +41,7 @@ The solution can be broken down into the following components:
     - Retrieve the top `k` most similar historical tickets.
 
 
-You can find the code for the same in the `solution.ipynb` notebook. The notebook contains detailed explanations of the code and the steps involved in the solution.
+You can find the code for the same in the [solution.ipynb](./solution.ipynb) notebook. The notebook contains detailed explanations of the code and the steps involved in the solution.
 
 **Note**: The system returns both the `resolved` and `unresolved` tickets but it can be modified quite easily to return only the `resolved` tickets by filtering the `old_tickets` data based on the `Resolved` column.
 
@@ -64,16 +66,16 @@ A screenshot of how the spaces looks is attached below:
 
 ## Improvements
 
-The system can be further improved by incorporating additional features such as a reranker, hybrid search, and explicit feedback from the agents using the system.
+The system can be further improved by incorporating the following:
 
-- **Smaller Language Model**: For calculating the embeddings I utilized the `luminous-base` LLM which contains `13B` parameters. It will perform really good but I expect smaller models like `distilbert-base-uncased` which contains `66M` parameters to also do a nice job. The advantage is the retrieval and embeddings can be faster compared to abigger LLM that contains billions parameters. So, I would have played with smaller models to see how they perform.
+- **Embed Resolution**: The `Resolution` field can also be used to further refine the search as it also contains valuable information regarding a ticket. The embeddings of the `Resolution` field can be concatenated with the embeddings of the `Issue` and `Description` fields to provide a more comprehensive search mechanism.
 
--  **Vector databases**: For storing the embeddings of the `old_tickets` data I utilised the `pandas DataFrame` but it won't scale as it is stored in memory. The system can be scaled by utilizing vector databases such as `Qdrant`, `Weaviate`, or others that can handle large-scale embeddings and provide efficient retrieval mechanisms.
+- **Smaller Language Model**: For calculating the embeddings I utilized the `luminous-base` LLM which contains `13B` parameters. It performs nicely but I expect smaller models like `distilbert-base-uncased` or `sentence-transformers` which contains some million parameters to also do a nice job. The advantage is the retrieval and embeddings can be faster compared to abigger LLM that contains billions parameters. So, I would have played with smaller models to see how they perform.
 
-- **Evaluation**: Qualitative Evaluation of the develop solution is a good first start. But, I would have also looked into doing a quantitative evaluation by calculating Information Retrieval metrics such as Mean Reciprocal Rank(MRR), Normalized Discounted Cumulative Gain (NDCG) and others to measure the performance of the system. I would have leveraged a LLM to build such a evaluation dataset. 
+- **Vector databases**: For storing the embeddings of the `old_tickets` data I utilised the `pandas DataFrame` but it won't scale as it is stored in memory. The system can be scaled by utilizing vector databases such as `Qdrant`, `Weaviate`, or others that can handle large-scale embeddings and provide efficient retrieval mechanisms. Using these vector databases, the similarity search will also be faster as their implementation is faster than the brute force search.
 
 - **Reranker**: The system can be further improved by incorporating a reranker that reorders the retrieved tickets.
 
 - **Hybrid Search**: The solution can also be improved by leveraging additional search such as text search based on BM25 or ElasticSearch to provide a hybrid search mechanism. This can help in providing a more diverse set of results. A lot of vector databases also provide this kind of support out of the box. 
 
-- **Feedback Mechanism**: Incorporating an explicit feedback mechanism where agents can provide feedback on the relevance of the retrieved tickets can help in improving the system over time.
+- **Evaluation**: Qualitative Evaluation of the develop solution is a good first start. But, I would have also looked into doing a quantitative evaluation by calculating Information Retrieval metrics such as Mean Reciprocal Rank(MRR), Normalized Discounted Cumulative Gain (NDCG) and others to measure the performance of the system. I would have leveraged a LLM to build such a evaluation dataset.
