@@ -84,18 +84,23 @@ A screenshot of how the spaces looks is attached below:
 
 **Note**: As of now, the space is private and can't be accessed directly. Please let me know if you would like to access the space, and I can then make the space public or I can also demonstrate it during our discussion.
 
-## Improvements
 
-The system can be further improved by incorporating the following:
+## Observations and Improvements
 
-- **Embed Resolution**: The `Resolution` field can also be used to further refine the search as it also contains valuable information regarding a ticket. The embeddings of the `Resolution` field can be concatenated with the embeddings of the `Issue` and `Description` fields to provide a more comprehensive search mechanism.
+- **Similarity Matching Suboptimal**: As we have only `30` samples in a `128` dimensional space, the similarity matching might not be optimal as the vector space is quite empty and hence the notion of similarity is distorted. The system can be improved by utilizing a larger dataset.
 
 - **Smaller Language Model**: For calculating the embeddings I utilized the `luminous-base` LLM which contains `13B` parameters. It performs nicely but I expect smaller models like `distilbert-base-uncased` or `sentence-transformers` which contains some million parameters to also do a nice job. The advantage is the retrieval and embeddings can be faster compared to abigger LLM that contains billions parameters. So, I would have played with smaller models to see how they perform.
 
+- **Embed Resolution**: The `Resolution` field can also be used to further refine the search as it also contains valuable information regarding a ticket. The embeddings of the `Resolution` field can be concatenated with the embeddings of the `Issue` and `Description` fields to provide a more comprehensive search mechanism.
+
 - **Vector databases**: For storing the embeddings of the `old_tickets` data I utilised the `pandas DataFrame` but it won't scale as it is stored in memory. The system can be scaled by utilizing vector databases such as `Qdrant`, `Weaviate`, or others that can handle large-scale embeddings and provide efficient retrieval mechanisms. Using these vector databases, the similarity search will also be faster as their implementation is faster than the brute force search.
 
-- **Reranker**: The system can be further improved by incorporating a reranker that reorders the retrieved tickets.
+- **Reranker**: The system can be further improved by incorporating a reranker(Cross Encoder Models) that reorders the retrieved tickets based on the new ticket information. This can help in providing more relevant results to the agent.
 
 - **Hybrid Search**: The solution can also be improved by leveraging additional search such as text search based on BM25 or ElasticSearch to provide a hybrid search mechanism. This can help in providing a more diverse set of results. A lot of vector databases also provide this kind of support out of the box. 
 
 - **Evaluation**: Qualitative Evaluation of the develop solution is a good first start. But, I would have also looked into doing a quantitative evaluation by calculating Information Retrieval metrics such as Mean Reciprocal Rank(MRR), Normalized Discounted Cumulative Gain (NDCG) and others to measure the performance of the system. I would have leveraged a LLM to build such a evaluation dataset.
+
+- **Observability**: I would also have tracked the number of tokens being utilized in the LLM, the time taken for encoding the data, the time taken for retrieval, and other metrics to monitor the performance of the system. This can help in identifying bottlenecks and optimizing the system.
+
+- **Retrieval Augmented Generation**: The system can be further improved by incorporating a retrieval augmented generation mechanism. The system can retrieve the top `k` most similar tickets and then generate a response based on the retrieved tickets. So, once we have top `k` tickets, an additional prompt together with the new ticket information can be fed to a LLM to generate a response. This directly generates a response that the agent can use to help the client. In this case, it is important to have a good generation model that can generate human-like responses. 
